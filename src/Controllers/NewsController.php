@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Kernel\Controller\Controller;
+use App\Kernel\Http\Redirect;
 use App\Kernel\View\View;
 
 class NewsController extends Controller
@@ -24,16 +25,15 @@ class NewsController extends Controller
 
     public function store()
     {
-        echo "store";
+        (new Redirect())->to('/news/');
+        //echo $this->request()->input('name');
     }
 
     public function update($id)
     {
-
     }
 
     public function delete($id)
     {
-
     }
 }
