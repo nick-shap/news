@@ -9,15 +9,15 @@
                 <div class="list-group-item list-group-item-action">
                     <div class="d-flex w-100 justify-content-between">
                         <h5 class="mb-1"><?= $item['name'] ?></h5>
-                    </div>
-                    <p class="mb-1"><?= $item['preview'] ?></p>
-                    <div class="mt-3 mb-1 btn-group">
-                        <a href="" class="btn btn-primary">Читать</a>
-                        <a href="" class="btn btn-secondary">Редактировать</a>
                         <form action=""  method="post">
                             <input type="hidden" name="id" value="<?= $item['id'] ?>">
-                            <button type="submit" class="btn btn-danger">Удалить</button>
+                            <button type="submit" class="btn btn-danger">X</button>
                         </form>
+                    </div>
+                    <p class="mb-1"><?= $item['preview'] ?></p>
+                    <div class="mt-3 mb-1">
+                        <a href="" class="btn btn-primary">Читать</a>
+                        <a href="" class="btn btn-secondary">Редактировать</a>
                     </div>
                 </div>
             </div>
