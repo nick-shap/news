@@ -31,6 +31,6 @@ class Container
         $this->redirect = new Redirect();
         $this->config = new Config();
         $this->database = new Database($this->config);
-        $this->router = new Router($this->view, $this->request, $this->redirect);
+        $this->router = new Router($this->view, $this->request, $this->redirect, $this->database);
     }
 }

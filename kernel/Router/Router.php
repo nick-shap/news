@@ -2,6 +2,7 @@
 
 namespace App\Kernel\Router;
 
+use App\Kernel\Database\Database;
 use App\Kernel\Http\Redirect;
 use App\Kernel\Http\Request;
 use App\Kernel\View\View;
@@ -16,7 +17,8 @@ class Router
     public function __construct(
         private View $view,
         private Request $request,
-        private Redirect $redirect
+        private Redirect $redirect,
+        private Database $database,
     )
     {
         $this->setRoutes();
@@ -39,6 +41,7 @@ class Router
             call_user_func([$controller, 'setView'], $this->view);
             call_user_func([$controller, 'setRequest'], $this->request);
             call_user_func([$controller, 'setRedirect'], $this->redirect);
+            call_user_func([$controller, 'setDatabase'], $this->database);
 
             call_user_func([$controller, $route->getAction()[1]]);
         } else {

@@ -19,7 +19,12 @@ class Database
     {
         $path = $this->config->get('DB_PATH');
 
-        $this->pdo = new \PDO("sqlite:" . $path);
+        try {
+            $this->pdo = new \PDO("sqlite:" . $path);
+        } catch (\PDOException $exception) {
+            exit($exception->getMessage());
+        }
+
     }
 
     public function save(string $table, array $data): int|false
@@ -37,7 +42,7 @@ class Database
 
     }
 
-    public function paginate(string $table, $limit, $offset)
+    public function paginated(string $table, $limit, $offset)
     {
 
     }
