@@ -2,6 +2,8 @@
 
 namespace App\Kernel\Container;
 
+use App\Kernel\Config\Config;
+use App\Kernel\Database\Database;
 use App\Kernel\Http\Redirect;
 use App\Kernel\Http\Request;
 use App\Kernel\Router\Route;
@@ -14,6 +16,8 @@ class Container
     public readonly Router $router;
     public readonly View $view;
     public readonly Redirect $redirect;
+    public readonly Config $config;
+    public readonly Database $database;
 
     public function __construct()
     {
@@ -25,6 +29,8 @@ class Container
         $this->request = Request::init();
         $this->view = new View();
         $this->redirect = new Redirect();
+        $this->config = new Config();
+        $this->database = new Database($this->config);
         $this->router = new Router($this->view, $this->request, $this->redirect);
     }
 }
