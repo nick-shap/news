@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'DB_PATH' => APP_PATH . 'db.sqlite',
+    'DB_PATH' => APP_PATH . '\db.sqlite',
 ];

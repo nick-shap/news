@@ -29,7 +29,22 @@ class Database
 
     public function save(string $table, array $data): int|false
     {
+        $fields = array_keys($data);
 
+        $columns = implode(', ', $fields);
+        $binds = implode(', ', array_map(fn ($field) => ":$field", $fields));
+
+        $sql = "INSERT INTO $table ($columns) VALUES ($binds)";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        try {
+            $stmt->execute($data);
+        } catch (\PDOException $exception) {
+            return false;
+        }
+
+        return (int) $this->pdo->lastInsertId();
     }
 
     public function delete(string $table, int $id)
@@ -47,8 +62,26 @@ class Database
 
     }
 
-    public function all(string $table)
+    public function all(string $table): array
     {
 
+        $result = [];
+
+        $sql = "SELECT * FROM $table";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        $stmt->execute();
+
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $result[] = [
+                'id' => $row['id'],
+                'name' => $row['name'],
+                'preview' => $row['preview'],
+                'detail' => $row['detail'],
+            ];
+        }
+
+        return $result;
     }
 }
