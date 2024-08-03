@@ -47,17 +47,49 @@ class Database
         return (int) $this->pdo->lastInsertId();
     }
 
-    public function delete(string $table, int $id)
+    public function delete(string $table, int $id): bool
     {
 
+        $sql = "DELETE FROM $table WHERE id = ?";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        try {
+            $stmt->execute([$id]);
+        } catch (\PDOException $exception) {
+            return false;
+        }
+
+        return true;
     }
 
     public function find(string $table, int $id)
     {
+        $result = [];
 
+        $sql = "SELECT * FROM $table WHERE id = ? LIMIT 1";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        try {
+            $stmt->execute([$id]);
+        } catch (\PDOException $exception) {
+            return false;
+        }
+
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $result = [
+                'id' => $row['id'],
+                'name' => $row['name'],
+                'preview' => $row['preview'],
+                'detail' => $row['detail'],
+            ];
+        }
+
+        return $result;
     }
 
-    public function paginated(string $table, $limit, $offset)
+    public function paginated(string $table, $offset)
     {
 
     }
@@ -71,7 +103,11 @@ class Database
 
         $stmt = $this->pdo->prepare($sql);
 
-        $stmt->execute();
+        try {
+            $stmt->execute();
+        } catch (\PDOException $exception) {
+            return false;
+        }
 
         while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
             $result[] = [

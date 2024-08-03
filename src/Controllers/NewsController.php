@@ -17,9 +17,13 @@ class NewsController extends Controller
         ]);
     }
 
-    public function show($id): void
+    public function show(): void
     {
-        $this->view('detail');
+        $news = $this->db()->find('news', $this->request()->input('id'));
+
+        $this->view('detail', [
+            'news' => $news,
+        ]);
     }
 
     public function create(): void
@@ -41,7 +45,10 @@ class NewsController extends Controller
     {
     }
 
-    public function delete($id)
+    public function delete()
     {
+        if ($this->db()->delete('news', $this->request()->input('id'))) {
+            (new Redirect())->to('/news/');
+        }
     }
 }
