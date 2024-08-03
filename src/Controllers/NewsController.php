@@ -10,7 +10,7 @@ class NewsController extends Controller
 {
     public function index(): void
     {
-        $news = $this->db()->all('news');
+        $news = $this->db()->paginated('news', (int) $this->request()->input('page', 1));
 
         $this->view('home', [
             'news' => $news,
@@ -31,7 +31,7 @@ class NewsController extends Controller
         $this->view('create');
     }
 
-    public function store()
+    public function store(): void
     {
         $this->db()->save('news', [
             'name' => $this->request()->input('name'),
@@ -50,7 +50,7 @@ class NewsController extends Controller
         ]);
     }
 
-    public function update()
+    public function update(): void
     {
         $this->db()->update('news', [
             'id' => $this->request()->input('id'),
@@ -62,10 +62,10 @@ class NewsController extends Controller
         $this->redirect('/news/edit?id=' . $this->request()->input('id'));
     }
 
-    public function delete()
+    public function delete(): void
     {
         if ($this->db()->delete('news', $this->request()->input('id'))) {
-            (new Redirect())->to('/news/');
+            (new Redirect())->to("/news?page=" . $this->request()->input('page', 1));
         }
     }
 }

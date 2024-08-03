@@ -15,7 +15,7 @@ class Database
         $this->connect();
     }
 
-    private function connect()
+    private function connect(): void
     {
         $path = $this->config->get('DB_PATH');
 
@@ -63,7 +63,7 @@ class Database
         return true;
     }
 
-    public function find(string $table, int $id)
+    public function find(string $table, int $id): array|bool
     {
         $result = [];
 
@@ -89,7 +89,7 @@ class Database
         return $result;
     }
 
-    public function update(string $table, array $data)
+    public function update(string $table, array $data): bool
     {
         $fields = array_keys($data);
 
@@ -104,19 +104,15 @@ class Database
         } catch (\PDOException $exception) {
             return false;
         }
+
+        return true;
     }
 
-    public function paginated(string $table, $offset)
+    public function paginated(string $table, int $page): array|bool
     {
-
-    }
-
-    public function all(string $table): array
-    {
-
         $result = [];
 
-        $sql = "SELECT * FROM $table";
+        $sql = "SELECT count(id) FROM $table";
 
         $stmt = $this->pdo->prepare($sql);
 
@@ -127,7 +123,27 @@ class Database
         }
 
         while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-            $result[] = [
+            $result['total'] = $row['count(id)'];
+        }
+
+        $result['count_pages'] = ceil($result['total'] / 5);
+
+        $offset = ($page - 1) * 5;
+
+        $result['current_page'] = $page;
+
+        $sql = "SELECT * FROM $table LIMIT 5 OFFSET $offset";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        try {
+            $stmt->execute();
+        } catch (\PDOException $exception) {
+            return false;
+        }
+
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $result['items'][] = [
                 'id' => $row['id'],
                 'name' => $row['name'],
                 'preview' => $row['preview'],
