@@ -89,6 +89,23 @@ class Database
         return $result;
     }
 
+    public function update(string $table, array $data)
+    {
+        $fields = array_keys($data);
+
+        $set = implode(', ', array_map(fn ($field) => "$field = :$field", $fields));
+
+        $sql = "UPDATE $table SET $set WHERE id = :id";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        try {
+            $stmt->execute($data);
+        } catch (\PDOException $exception) {
+            return false;
+        }
+    }
+
     public function paginated(string $table, $offset)
     {
 

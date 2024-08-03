@@ -41,8 +41,25 @@ class NewsController extends Controller
         (new Redirect())->to('/news/');
     }
 
-    public function update($id)
+    public function edit()
     {
+        $news = $this->db()->find('news', $this->request()->input('id'));
+
+        $this->view('edit', [
+            'news' => $news,
+        ]);
+    }
+
+    public function update()
+    {
+        $this->db()->update('news', [
+            'id' => $this->request()->input('id'),
+            'name' => $this->request()->input('name'),
+            'preview' => $this->request()->input('preview'),
+            'detail' => $this->request()->input('detail'),
+        ]);
+
+        $this->redirect('/news/edit?id=' . $this->request()->input('id'));
     }
 
     public function delete()

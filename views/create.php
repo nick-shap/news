@@ -5,7 +5,9 @@
         <h1 class="title">Добавить новость</h1>
     </div>
 
-    <div class="form">
+    <a class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="/news/">Вернуться</a>
+
+    <div class="form mt-4">
         <form action="" method="POST">
             <div class="mb-3">
                 <label class="form-label">Название: </label>

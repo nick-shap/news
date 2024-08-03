@@ -6,7 +6,9 @@
 <div>
     <h1 class="title mt-4 mb-4">Новости</h1>
 
-    <div class="list-group">
+    <a class="btn btn-success" href="/news/create">Добавить</a>
+
+    <div class="list-group mt-4">
         <?php foreach ($news as $item): ?>
             <div class="mb-3">
                 <div class="list-group-item list-group-item-action">
@@ -20,7 +22,7 @@
                     <p class="mb-1"><?= $item['preview'] ?></p>
                     <div class="mt-3 mb-1">
                         <a href="/news/show?id=<?= $item['id'] ?>" class="btn btn-primary">Читать</a>
-                        <a href="" class="btn btn-secondary">Редактировать</a>
+                        <a href="/news/edit?id=<?= $item['id'] ?>" class="btn btn-secondary">Редактировать</a>
                     </div>
                 </div>
             </div>
